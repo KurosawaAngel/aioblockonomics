@@ -1,10 +1,10 @@
 # AioBloconomics
 
-## Asynchronous wrapper for the [Bloconomics API](https://bloconomics.co/)
+## Asynchronous wrapper for the [Bloconomics API](https://blockonomics.co)
 
 ## About
 
-Used AioHttp for the asynchronous requests and Pydantic for the data validation.
+Used AioHTTP for the asynchronous requests and Pydantic for the data validation.
 
 ## Requirements
 
