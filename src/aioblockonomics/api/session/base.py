@@ -13,7 +13,7 @@ class BaseSession(Protocol):
         headers: dict[str, str] | None = None,
         params: dict[str, str | int] | None = None,
         data: dict[str, Any] | None = None,
-    ) -> dict[str, str | float | int]:
+    ) -> str:
         """
         Asynchronous method to make a request to the Blockonomics API.
 
@@ -25,7 +25,7 @@ class BaseSession(Protocol):
             data (dict[str, Any] | None): Optional; The body data to include in the request.
 
         Returns:
-            dict[str, str | float | int]: The response from the Blockonomics API.
+            str: The JSON response from the Blockonomics API.
         """
         raise NotImplementedError
 

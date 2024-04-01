@@ -1,4 +1,4 @@
-from aioblockonomics import CurrencyCode
+from aioblockonomics.enums import CurrencyCode
 from aioblockonomics.models import BaseModel
 
 

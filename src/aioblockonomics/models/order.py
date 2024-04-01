@@ -11,7 +11,9 @@ class Order(BaseModel):
     Attributes:
         status (OrderStatus): The status of the order.
         order_id (str): The unique identifier of the order.
+        secret (str): The secret for the callbacks.
     """
 
     status: OrderStatus
     order_id: str
+    secret: str

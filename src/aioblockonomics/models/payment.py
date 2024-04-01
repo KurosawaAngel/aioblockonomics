@@ -16,6 +16,7 @@ class Payment(BaseModel):
         txid (str): The ID of the paying transaction.
         rbf (int | None): For unconfirmed transactions, an rbf attribute may be returned.
                           It is optional and may not always be present.
+        secret (str): The secret for the callbacks.
     """
 
     status: PaymentStatus
@@ -23,6 +24,7 @@ class Payment(BaseModel):
     value: int
     txid: str
     rbf: int | None
+    secret: str | None
 
     @property
     def btc_value(self) -> float:

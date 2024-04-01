@@ -1,8 +1,10 @@
-from .models import Payment, Order, NewAddress, BTCPrice
+from .blockonomics import Blockonomics
+from .models import BTCPrice, NewWallet, Order, Payment
 
 __all__ = [
+    "Blockonomics",
     "Payment",
     "Order",
-    "NewAddress",
+    "NewWallet",
     "BTCPrice",
 ]

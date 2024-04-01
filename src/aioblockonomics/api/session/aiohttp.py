@@ -28,14 +28,14 @@ class AiohttpSession(BaseSession):
         headers: dict[str, str] | None = None,
         params: dict[str, str | int] | None = None,
         data: dict[str, Any] | None = None,
-    ) -> dict[str, str | float | int]:
+    ) -> str:
         session = self._get_session()
 
         async with session.request(
             method, url, headers=headers, params=params, data=data
         ) as response:
             response.raise_for_status()
-            return await response.json()
+            return await response.text()
 
     async def close(self) -> None:
         if self._session is not None:
