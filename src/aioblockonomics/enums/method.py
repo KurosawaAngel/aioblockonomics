@@ -1,6 +1,6 @@
-from enum import auto, StrEnum
+from enum import StrEnum
 
 
-class Method(StrEnum):
-    GET = auto()
-    POST = auto()
+class RequestMethod(StrEnum):
+    GET = "GET"
+    POST = "POST"

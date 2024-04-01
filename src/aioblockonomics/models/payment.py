@@ -1,10 +1,12 @@
-from aioblockonomics import PaymentStatus
+from aioblockonomics.enums import PaymentStatus
 from aioblockonomics.models import BaseModel
 
 
 class Payment(BaseModel):
     """
     This is the Payment class which represents HTTP Callback from payment.
+
+    Origin: https://www.blockonomics.co/views/api.html#httpcallback
 
     Attributes:
         status (PaymentStatus): The status of the transaction.
