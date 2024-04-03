@@ -8,8 +8,8 @@ class BTCPrice(BaseModel):
 
     Attributes:
         price (float | None): The price of Bitcoin in the specified currency. None if the price is not available.
-        currency (CurrencyCode): The currency in which the price is represented.
+        currency_code (CurrencyCode): The currency in which the price is represented.
     """
 
     price: float | None
-    currency: CurrencyCode
+    currency_code: CurrencyCode

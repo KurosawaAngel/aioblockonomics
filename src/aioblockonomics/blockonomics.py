@@ -44,7 +44,7 @@ class Blockonomics:
         )
         return NewWallet.model_validate_json(response)
 
-    async def register_payment_handler(
+    def register_payment_handler(
         self,
         func: PaymentHandler,
         secret_token: str | None = None,
