@@ -55,8 +55,8 @@ class Blockonomics:
         )
         self._payment_handlers.append(handler)
 
-    async def get_payment_update(self, request: web.Request) -> web.Response:
-        payment = Payment.model_validate_json(await request.json())
+    async def handle_payment_updates(self, request: web.Request) -> web.Response:
+        payment = Payment.model_validate_json(await request.text())
         for handler in self._payment_handlers:
             if handler.status_filter and payment.status != handler.status_filter:
                 continue

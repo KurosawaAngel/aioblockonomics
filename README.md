@@ -23,7 +23,7 @@ API_KEY = ""
 
 
 async def get_payment(
-    payment: Payment, app: web.Application, blockonomics: Blockonomics
+        payment: Payment, app: web.Application, blockonomics: Blockonomics
 ) -> None:
     print(
         f"Payment received: {payment.value} satoshi on address {payment.addr}. Status: {payment.status}"
@@ -41,7 +41,7 @@ def main() -> None:
 
     blockonomics = Blockonomics(API_KEY)
     blockonomics.register_payment_handler(get_payment)
-    app.add_routes([web.post("/payment", blockonomics.get_payment_update)])
+    app.add_routes([web.post("/payment", blockonomics.handle_payment_updates)])
 
     return web.run_app(app)
 
