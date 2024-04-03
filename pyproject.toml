@@ -3,20 +3,11 @@ name = "aioblockonomics"
 version = "0.1.0"
 description = "Asynchronous python wrapper for the Blockonomics API"
 authors = ["KuroAngel <145038102+KuroKoka551@users.noreply.github.com>"]
+license = "Apache-2.0"
 readme = "README.md"
+repository = "https://github.com/KuroKoka551/aioblockonomics"
+documentation = "https://www.blockonomics.co/views/api.html"
 packages = [{include = "aioblockonomics", from = "src"}]
-
-[project]
-license = { text = "Apache-2.0" }
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
-    "Operating System :: OS Independent",
-]
-
-[project.urls]
-"Homepage" = "https://github.com/KuroKoka551/aioblockonomics"
 
 [tool.poetry.dependencies]
 python = "^3.11"
