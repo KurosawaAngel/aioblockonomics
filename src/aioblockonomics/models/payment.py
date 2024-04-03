@@ -12,11 +12,11 @@ class Payment(BaseModel):
         status (PaymentStatus): The status of the transaction.
                                 0 - Unconfirmed, 1 - Partially Confirmed, 2 - Confirmed.
         addr (str): The receiving Bitcoin address.
-        value (int): The received payment amount in satoshis.
+        value (int): The received payment amount in satoshi.
         txid (str): The ID of the paying transaction.
-        rbf (int | None): For unconfirmed transactions, an rbf attribute may be returned.
+        rbf (int | None): For unconfirmed transactions, a rbf attribute may be returned.
                           It is optional and may not always be present.
-        secret (str): The secret for the callbacks.
+        secret (str): The secret token for the callbacks.
     """
 
     status: PaymentStatus

@@ -9,14 +9,8 @@ from aioblockonomics.urls import BASE_URL
 
 class AiohttpSession(BaseSession):
     """
-    This is the Session class which is used as a protocols for creating sessions with the Blockonomics API.
-
-    Attributes:
-        _session (aiohttp.ClientSession | None): An instance of aiohttp.ClientSession or None.
-                                                This is used to make HTTP requests to the Blockonomics API.
+    This is the aiohttp session which is used to make requests to the Blockonomics API.
     """
-
-    _session: aiohttp.ClientSession | None
 
     def __init__(self) -> None:
         self._session = None

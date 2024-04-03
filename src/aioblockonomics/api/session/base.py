@@ -5,6 +5,10 @@ from aioblockonomics.enums import RequestMethod
 
 
 class BaseSession(Protocol):
+    """
+    Base class for all Session classes.
+    """
+
     @abstractmethod
     async def make_request(
         self,

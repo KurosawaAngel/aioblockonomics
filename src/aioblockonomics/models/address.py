@@ -9,7 +9,7 @@ class NewWallet(BaseModel):
 
     Attributes:
         address (str): The new Bitcoin address.
-        reset (int | None): This will not increment index and will keep giving last generated address.
+        reset (int | None): Reset index.
         account (str | None): Linked address account.
     """
 
