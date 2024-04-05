@@ -36,6 +36,6 @@ class BaseSession(Protocol):
     @abstractmethod
     async def close(self) -> None:
         """
-        This method is used to close the aiohttp.ClientSession object.
+        This method is used to close the ClientSession object.
         """
         raise NotImplementedError

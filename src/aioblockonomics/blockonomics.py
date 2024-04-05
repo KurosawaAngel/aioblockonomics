@@ -12,15 +12,22 @@ logger = logging.getLogger(__name__)
 
 
 class Blockonomics:
+    """
+    Blockonomics API client.
+    Consists of methods to interact with Blockonomics API.
+
+    API DOCUMENTATION: https://www.blockonomics.co/views/api.html
+    """
+
     def __init__(
         self,
         api_key: str,
         *,
         session: BaseSession | None = None,
     ):
-        self.__headers = {"Authorization": f"Bearer {api_key}"}
         self.session = session or AiohttpSession()
         self._payment_handlers: list[PaymentHandlerObject] = []
+        self.__headers = {"Authorization": f"Bearer {api_key}"}
 
     async def get_btc_price(self, currency_code: CurrencyCode) -> BTCPrice:
         response = await self.session.make_request(
@@ -57,6 +64,7 @@ class Blockonomics:
 
     async def handle_payment_updates(self, request: web.Request) -> web.Response:
         payment = Payment.model_validate_json(await request.text())
+
         for handler in self._payment_handlers:
             if handler.status_filter and payment.status != handler.status_filter:
                 continue

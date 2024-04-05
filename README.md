@@ -35,6 +35,9 @@ async def get_payment(
         f"Payment in {btc_price.currency_code}: {payment.convert_to_fiat(btc_price.price)}"
     )
 
+async def on_shutdown(app: web.Application) -> None:
+    blockonomics: Blockonomics = app["blockonomics"]
+    await blockonomics.session.close()
 
 def main() -> None:
     app = web.Application()
@@ -42,6 +45,8 @@ def main() -> None:
     blockonomics = Blockonomics(API_KEY)
     blockonomics.register_payment_handler(get_payment)
     app.add_routes([web.post("/payment", blockonomics.handle_payment_updates)])
+    app["blockonomics"] = blockonomics
+    app.on_shutdown.append(on_shutdown)
 
     return web.run_app(app)
 
