@@ -1,12 +1,19 @@
+from abc import abstractmethod
 from dataclasses import dataclass
-from typing import Any, Awaitable, Callable
+from typing import Any, Protocol
 
 from aiohttp import web
 
 from aioblockonomics import Blockonomics, Payment
 from aioblockonomics.enums import PaymentStatus
 
-PaymentHandler = Callable[[Payment, web.Application, Blockonomics], Awaitable[Any]]
+
+class PaymentHandler(Protocol):
+    @abstractmethod
+    async def __call__(
+        self, payment: Payment, app: web.Application, blockonomics: Blockonomics
+    ) -> Any:
+        raise NotImplementedError
 
 
 @dataclass
