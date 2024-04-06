@@ -1,10 +1,4 @@
-from .blockonomics import Blockonomics
+from .client import AioBlockonomics
 from .models import BTCPrice, NewWallet, Order, Payment
 
-__all__ = [
-    "Blockonomics",
-    "Payment",
-    "Order",
-    "NewWallet",
-    "BTCPrice",
-]
+__all__ = ["AioBlockonomics", "Payment", "BTCPrice", "Order", "NewWallet"]

@@ -10,10 +10,10 @@ class PaymentStatus(IntEnum):
 class OrderStatus(IntEnum):
     """
     Attributes:
-        PAYMENT_ERROR (-1): This status is set when the paid BTC amount does not match the expected value.
-        UNPAID (0): This status is set when the payment has not been made yet.
-        IN_PROCESS (1): This status is set when the payment process is ongoing.
-        PAID (2): This status is set when the payment has been successfully completed.
+        PAYMENT_ERROR (-1): Paid BTC amount does not match the expected value.
+        UNPAID (0): Payment has not been made yet.
+        IN_PROCESS (1): Payment process is ongoing.
+        PAID (2): Payment has been successfully completed.
     """
 
     PAYMENT_ERROR = -1

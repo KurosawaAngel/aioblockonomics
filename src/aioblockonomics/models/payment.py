@@ -1,8 +1,9 @@
 from aioblockonomics.enums import PaymentStatus
-from aioblockonomics.models import BaseModel
+
+from .base import BaseBlockonomicsModel
 
 
-class Payment(BaseModel):
+class Payment(BaseBlockonomicsModel):
     """
     This is the Payment class which represents HTTP Callback from payment.
 
@@ -15,8 +16,7 @@ class Payment(BaseModel):
         value (int): The received payment amount in satoshi.
         txid (str): The ID of the paying transaction.
         rbf (int | None): For unconfirmed transactions, a rbf attribute may be returned.
-                          It is optional and may not always be present.
-        secret (str): The secret token for the callbacks.
+        secret (str | None): The secret token for the callbacks.
     """
 
     status: PaymentStatus

@@ -1,8 +1,9 @@
 from aioblockonomics.enums import OrderStatus
-from aioblockonomics.models import BaseModel
+
+from .base import BaseBlockonomicsModel
 
 
-class Order(BaseModel):
+class Order(BaseBlockonomicsModel):
     """
     This is the Order class which represents an order from HTTP callback.
 
@@ -11,9 +12,9 @@ class Order(BaseModel):
     Attributes:
         status (OrderStatus): The status of the order.
         order_id (str): The unique identifier of the order.
-        secret (str): The secret for the callbacks.
+        secret (str | None): The secret for the callbacks.
     """
 
     status: OrderStatus
     order_id: str
-    secret: str
+    secret: str | None

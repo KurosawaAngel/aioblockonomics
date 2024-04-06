@@ -1,7 +1,7 @@
-from aioblockonomics.models import BaseModel
+from .base import BaseBlockonomicsModel
 
 
-class NewWallet(BaseModel):
+class NewWallet(BaseBlockonomicsModel):
     """
     This is the NewAddress class which represents a new address in the Blockonomics service to accept payments.
 

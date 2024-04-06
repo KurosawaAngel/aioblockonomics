@@ -1,10 +1,12 @@
-from typing import Any
+from http import HTTPMethod
+from typing import Any, Mapping
 
 import aiohttp
 
-from aioblockonomics.api.session import BaseSession
-from aioblockonomics.enums import RequestMethod
-from aioblockonomics.urls import BASE_URL
+from aioblockonomics.api.session.base import BaseSession
+from aioblockonomics.api.url import BLOCKONOMICS_URL
+from aioblockonomics.enums import BlockonomicsEndpoint
+from aioblockonomics.utils import check_response
 
 
 class AiohttpSession(BaseSession):
@@ -12,24 +14,28 @@ class AiohttpSession(BaseSession):
     This is the aiohttp session which is used to make requests to the Blockonomics API.
     """
 
-    def __init__(self) -> None:
+    _session: aiohttp.ClientSession | None
+
+    def __init__(self, base_url: str = BLOCKONOMICS_URL) -> None:
         self._session = None
+        super().__init__(base_url)
 
     async def make_request(
         self,
-        method: RequestMethod,
-        url: str,
-        headers: dict[str, str] | None = None,
-        params: dict[str, str | int] | None = None,
-        data: dict[str, Any] | None = None,
+        method: HTTPMethod,
+        endpoint: BlockonomicsEndpoint,
+        headers: Mapping[str, str] | None = None,
+        params: Mapping[str, Any] | None = None,
+        data: Mapping[str, Any] | None = None,
     ) -> str:
         session = self._get_session()
 
         async with session.request(
-            method, url, headers=headers, params=params, data=data
+            method, endpoint, headers=headers, params=params, data=data
         ) as response:
-            response.raise_for_status()
-            return await response.text()
+            text = await response.text()
+
+        return check_response(text, response.status)
 
     async def close(self) -> None:
         if self._session is not None:
@@ -44,5 +50,5 @@ class AiohttpSession(BaseSession):
             aiohttp.ClientSession: The aiohttp.ClientSession object.
         """
         if self._session is None or self._session.closed:
-            self._session = aiohttp.ClientSession(BASE_URL)
+            self._session = aiohttp.ClientSession(self.base_url)
         return self._session

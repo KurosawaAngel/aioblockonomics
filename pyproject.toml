@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aioblockonomics"
-version = "0.1.0"
+version = "0.2.0"
 description = "Asynchronous python wrapper for the Blockonomics API"
 authors = ["KuroAngel <145038102+KuroKoka551@users.noreply.github.com>"]
 license = "Apache-2.0"
@@ -14,6 +14,9 @@ python = "^3.11"
 aiohttp = "^3.9.3"
 pydantic = "^2.6.4"
 
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.9.0"
 
 [build-system]
 requires = ["poetry-core"]

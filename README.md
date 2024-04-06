@@ -15,7 +15,7 @@ Used AioHTTP for the asynchronous requests and Pydantic for the data validation.
 ## MRE
 
 ```python
-from aioblockonomics import Blockonomics, Payment
+from aioblockonomics import AioBlockonomics, Payment
 from aioblockonomics.enums import CurrencyCode
 from aiohttp import web
 
@@ -23,26 +23,28 @@ API_KEY = ""
 
 
 async def get_payment(
-        payment: Payment, app: web.Application, blockonomics: Blockonomics
+        payment: Payment, app: web.Application, blockonomics: AioBlockonomics
 ) -> None:
     print(
         f"Payment received: {payment.value} satoshi on address {payment.addr}. Status: {payment.status}"
     )
     print(f"Payment in BTC: {payment.btc_value}")
     btc_price = await blockonomics.get_btc_price(CurrencyCode.USD)
-    print(f"BTC price in {btc_price.currency_code}: {btc_price.price}")
+    print(f"BTC price in {CurrencyCode.USD}: {btc_price.price}")
     print(
-        f"Payment in {btc_price.currency_code}: {payment.convert_to_fiat(btc_price.price)}"
+        f"Payment in {CurrencyCode.USD}: {payment.convert_to_fiat(btc_price.price)}"
     )
 
+
 async def on_shutdown(app: web.Application) -> None:
-    blockonomics: Blockonomics = app["blockonomics"]
+    blockonomics: AioBlockonomics = app["blockonomics"]
     await blockonomics.session.close()
+
 
 def main() -> None:
     app = web.Application()
 
-    blockonomics = Blockonomics(API_KEY)
+    blockonomics = AioBlockonomics(API_KEY)
     blockonomics.register_payment_handler(get_payment)
     app.add_routes([web.post("/payment", blockonomics.handle_payment_updates)])
     app["blockonomics"] = blockonomics

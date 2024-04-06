@@ -1,17 +1,22 @@
 import logging
+from http import HTTPMethod
 
 from aiohttp import web
 
-from aioblockonomics import BTCPrice, NewWallet, Payment
 from aioblockonomics.api.handlers import PaymentHandler, PaymentHandlerObject
-from aioblockonomics.api.session import AiohttpSession, BaseSession
-from aioblockonomics.enums import CurrencyCode, PaymentStatus, RequestMethod
-from aioblockonomics.urls import PRICE_URL
+from aioblockonomics.api.session import AiohttpSession
+from aioblockonomics.api.session.base import BaseSession
+from aioblockonomics.enums import (
+    BlockonomicsEndpoint,
+    CurrencyCode,
+    PaymentStatus,
+)
+from aioblockonomics.models import BTCPrice, NewWallet, Payment
 
 logger = logging.getLogger(__name__)
 
 
-class Blockonomics:
+class AioBlockonomics:
     """
     Blockonomics API client.
     Consists of methods to interact with Blockonomics API.
@@ -26,28 +31,31 @@ class Blockonomics:
         session: BaseSession | None = None,
     ):
         self.session = session or AiohttpSession()
-        self._payment_handlers: list[PaymentHandlerObject] = []
+        self._payment_handlers: list[PaymentHandlerObject["AioBlockonomics"]] = []
         self.__headers = {"Authorization": f"Bearer {api_key}"}
 
     async def get_btc_price(self, currency_code: CurrencyCode) -> BTCPrice:
         response = await self.session.make_request(
-            RequestMethod.GET, PRICE_URL, params={"currency": currency_code}
+            HTTPMethod.GET,
+            BlockonomicsEndpoint.BTC_PRICE,
+            params={"currency": currency_code},
         )
-        return BTCPrice.model_validate_json(
-            response, context={"currency": currency_code}
-        )
+        return BTCPrice.model_validate_json(response)
 
     async def create_new_wallet(
         self, reset: int | None, match_account: str | None
     ) -> NewWallet:
-        params = {}
+        param: dict[str, str | int] = {}
         if reset:
-            params["reset"] = reset
+            param["reset"] = reset
         if match_account:
-            params["match_account"] = match_account
+            param["match_account"] = match_account
 
         response = await self.session.make_request(
-            RequestMethod.POST, PRICE_URL, params=params, headers=self.__headers
+            HTTPMethod.POST,
+            BlockonomicsEndpoint.NEW_WALLET,
+            params=param,
+            headers=self.__headers,
         )
         return NewWallet.model_validate_json(response)
 

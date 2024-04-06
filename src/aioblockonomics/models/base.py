@@ -2,5 +2,5 @@ from pydantic import BaseModel as _BaseModel
 from pydantic import ConfigDict
 
 
-class BaseModel(_BaseModel):
+class BaseBlockonomicsModel(_BaseModel):
     model_config = ConfigDict(frozen=True)

@@ -1,6 +1,6 @@
 from enum import StrEnum
 
 
-class RequestMethod(StrEnum):
+class HTTPMethod(StrEnum):
     GET = "GET"
     POST = "POST"

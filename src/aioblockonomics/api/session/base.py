@@ -1,31 +1,36 @@
-from abc import abstractmethod
-from typing import Any, Protocol
+from abc import ABC, abstractmethod
+from http import HTTPMethod
+from typing import Any, Mapping
 
-from aioblockonomics.enums import RequestMethod
+from aioblockonomics.api.url import BLOCKONOMICS_URL
+from aioblockonomics.enums import BlockonomicsEndpoint
 
 
-class BaseSession(Protocol):
+class BaseSession(ABC):
     """
     Base class for all Session classes.
     """
 
+    def __init__(self, base_url: str = BLOCKONOMICS_URL) -> None:
+        self.base_url = base_url
+
     @abstractmethod
     async def make_request(
         self,
-        method: RequestMethod,
-        url: str,
-        headers: dict[str, str] | None = None,
-        params: dict[str, str | int] | None = None,
-        data: dict[str, Any] | None = None,
+        method: HTTPMethod,
+        url: BlockonomicsEndpoint,
+        headers: Mapping[str, str] | None = None,
+        params: Mapping[str, Any] | None = None,
+        data: Mapping[str, Any] | None = None,
     ) -> str:
         """
         Asynchronous method to make a request to the Blockonomics API.
 
         Args:
-            method (RequestMethod): The HTTP method to be used for the request.
+            method (HTTPMethod): The HTTP method to be used for the request.
             url (str): The URL to which the request will be made.
             headers (dict[str, str] | None): Optional; The headers to include in the request.
-            params (dict[str, str | int] | None): Optional; The URL parameters to include in the request.
+            params (dict[str, Any] | None): Optional; The URL parameters to include in the request.
             data (dict[str, Any] | None): Optional; The body data to include in the request.
 
         Returns:
