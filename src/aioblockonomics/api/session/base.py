@@ -1,18 +1,16 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from http import HTTPMethod
-from typing import Any, Mapping
+from typing import Any, Mapping, Protocol
 
-from aioblockonomics.api.url import BLOCKONOMICS_URL
 from aioblockonomics.enums import BlockonomicsEndpoint
 
 
-class BaseSession(ABC):
+class BaseSession(Protocol):
     """
     Base class for all Session classes.
     """
 
-    def __init__(self, base_url: str = BLOCKONOMICS_URL) -> None:
-        self.base_url = base_url
+    base_url: str
 
     @abstractmethod
     async def make_request(

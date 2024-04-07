@@ -18,7 +18,7 @@ class AiohttpSession(BaseSession):
 
     def __init__(self, base_url: str = BLOCKONOMICS_URL) -> None:
         self._session = None
-        super().__init__(base_url)
+        self.base_url = base_url
 
     async def make_request(
         self,

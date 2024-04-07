@@ -15,7 +15,8 @@ Used AioHTTP for the asynchronous requests and Pydantic for the data validation.
 ## MRE
 
 ```python
-from aioblockonomics import AioBlockonomics, Payment
+from aioblockonomics import AioBlockonomics
+from aioblockonomics.models import Payment
 from aioblockonomics.enums import CurrencyCode
 from aiohttp import web
 
