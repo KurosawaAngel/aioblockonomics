@@ -1,30 +1,31 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import Any, Generic, Protocol, TypeVar
+from typing import Any, Protocol, TYPE_CHECKING
 
 from aiohttp import web
 
 from aioblockonomics.enums import PaymentStatus
 from aioblockonomics.models import Payment
 
-T = TypeVar("T", contravariant=True)
+if TYPE_CHECKING:
+    from aioblockonomics.client import AioBlockonomics
 
 
-class PaymentHandler(Protocol[T]):
+class PaymentHandler(Protocol):
     @abstractmethod
     async def __call__(
-        self, payment: Payment, app: web.Application, blockonomics: T
+        self, payment: Payment, app: web.Application, blockonomics: "AioBlockonomics"
     ) -> Any:
         raise NotImplementedError
 
 
 @dataclass
-class PaymentHandlerObject(Generic[T]):
-    func: PaymentHandler[T]
+class PaymentHandlerObject:
+    func: PaymentHandler
     status_filter: PaymentStatus | None = None
     secret_token: str | None = None
 
     async def __call__(
-        self, payment: Payment, app: web.Application, blockonomics: T
+        self, payment: Payment, app: web.Application, blockonomics: "AioBlockonomics"
     ) -> Any:
         return await self.func(payment, app, blockonomics)

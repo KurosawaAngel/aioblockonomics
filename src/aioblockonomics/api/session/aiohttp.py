@@ -4,7 +4,7 @@ from typing import Any, Mapping
 import aiohttp
 
 from aioblockonomics.api.session.base import BaseSession
-from aioblockonomics.api.url import BLOCKONOMICS_URL
+from aioblockonomics.api.const import BLOCKONOMICS_URL
 from aioblockonomics.enums import BlockonomicsEndpoint
 from aioblockonomics.utils import check_response
 
@@ -18,7 +18,7 @@ class AiohttpSession(BaseSession):
 
     def __init__(self, base_url: str = BLOCKONOMICS_URL) -> None:
         self._session = None
-        super().__init__(base_url)
+        self.base_url = base_url
 
     async def make_request(
         self,

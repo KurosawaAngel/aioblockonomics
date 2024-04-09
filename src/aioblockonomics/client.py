@@ -29,9 +29,9 @@ class AioBlockonomics:
         api_key: str,
         *,
         session: BaseSession | None = None,
-    ):
+    ) -> None:
         self.session = session or AiohttpSession()
-        self._payment_handlers: list[PaymentHandlerObject["AioBlockonomics"]] = []
+        self._payment_handlers: list[PaymentHandlerObject] = []
         self.__headers = {"Authorization": f"Bearer {api_key}"}
 
     async def get_btc_price(self, currency_code: CurrencyCode) -> BTCPrice:

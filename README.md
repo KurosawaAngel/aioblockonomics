@@ -15,7 +15,8 @@ Used AioHTTP for the asynchronous requests and Pydantic for the data validation.
 ## MRE
 
 ```python
-from aioblockonomics import AioBlockonomics, Payment
+from aioblockonomics import AioBlockonomics
+from aioblockonomics.models import Payment
 from aioblockonomics.enums import CurrencyCode
 from aiohttp import web
 
@@ -46,7 +47,7 @@ def main() -> None:
 
     blockonomics = AioBlockonomics(API_KEY)
     blockonomics.register_payment_handler(get_payment)
-    app.add_routes([web.post("/payment", blockonomics.handle_payment_updates)])
+    app.add_routes([web.get("/payment", blockonomics.handle_payment_updates)])
     app["blockonomics"] = blockonomics
     app.on_shutdown.append(on_shutdown)
 
