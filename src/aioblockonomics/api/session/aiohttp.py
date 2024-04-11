@@ -23,15 +23,15 @@ class AiohttpSession(BaseSession):
     async def make_request(
         self,
         method: HTTPMethod,
-        endpoint: BlockonomicsEndpoint,
+        url: BlockonomicsEndpoint,
         headers: Mapping[str, str] | None = None,
-        params: Mapping[str, Any] | None = None,
+        params: Mapping[str, int | str] | None = None,
         data: Mapping[str, Any] | None = None,
-    ) -> str:
+    ) -> dict[str, Any]:
         session = self._get_session()
 
         async with session.request(
-            method, endpoint, headers=headers, params=params, data=data
+            method, url, headers=headers, params=params, data=data
         ) as response:
             text = await response.text()
 

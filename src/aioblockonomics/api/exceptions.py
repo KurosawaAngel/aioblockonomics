@@ -6,7 +6,7 @@ class BlockonomicsAPIError(Exception):
 
 class InternalServerError(BlockonomicsAPIError):
     """
-    This exception is raised when a required parameter is missing.
+    This exception is raised when a required parameter is missing or server unavailable.
     """
 
 
@@ -17,13 +17,12 @@ class UnauthorizedError(BlockonomicsAPIError):
 
 
 class UnknownError(BlockonomicsAPIError):
-    def __init__(self, status_code: int, text: str):
+    def __init__(self, status_code: int, content: str):
         self.status_code = status_code
-        self.text = text
+        self.content = content
 
     def __str__(self) -> str:
         return (
-            f"Got an unknown error with status code {self.status_code}"
-            "from Blockonomics API"
-            f"Content: {self.text}"
+            f"Got an unknown error with status code {self.status_code} from Blockonomics API\n"
+            f"Content: {self.content}"
         )

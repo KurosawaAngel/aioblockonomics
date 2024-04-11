@@ -18,9 +18,9 @@ class BaseSession(Protocol):
         method: HTTPMethod,
         url: BlockonomicsEndpoint,
         headers: Mapping[str, str] | None = None,
-        params: Mapping[str, Any] | None = None,
+        params: Mapping[str, int | str] | None = None,
         data: Mapping[str, Any] | None = None,
-    ) -> str:
+    ) -> dict[str, Any]:
         """
         Asynchronous method to make a request to the Blockonomics API.
 

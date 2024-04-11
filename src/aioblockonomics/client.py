@@ -40,7 +40,7 @@ class AioBlockonomics:
             BlockonomicsEndpoint.BTC_PRICE,
             params={"currency": currency_code},
         )
-        return BTCPrice.model_validate_json(response)
+        return BTCPrice.model_validate(response)
 
     async def create_new_wallet(
         self, reset: int | None, match_account: str | None
@@ -57,7 +57,7 @@ class AioBlockonomics:
             params=param,
             headers=self.__headers,
         )
-        return NewWallet.model_validate_json(response)
+        return NewWallet.model_validate(response)
 
     def register_payment_handler(
         self,
@@ -71,7 +71,7 @@ class AioBlockonomics:
         self._payment_handlers.append(handler)
 
     async def handle_payment_updates(self, request: web.Request) -> web.Response:
-        payment = Payment.model_validate_json(await request.text())
+        payment = Payment.model_validate(request.query)
 
         for handler in self._payment_handlers:
             if handler.status_filter and payment.status != handler.status_filter:
