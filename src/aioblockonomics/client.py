@@ -34,13 +34,13 @@ class AioBlockonomics:
         self._payment_handlers: list[PaymentHandlerObject] = []
         self.__headers = {"Authorization": f"Bearer {api_key}"}
 
-    async def get_btc_price(self, currency_code: CurrencyCode) -> BTCPrice:
+    async def get_btc_price(self, currency_code: CurrencyCode) -> float | None:
         response = await self.session.make_request(
             HTTPMethod.GET,
             BlockonomicsEndpoint.BTC_PRICE,
             params={"currency": currency_code},
         )
-        return BTCPrice.model_validate(response)
+        return BTCPrice.model_validate(response).price
 
     async def create_new_wallet(
         self, reset: int | None, match_account: str | None

@@ -31,9 +31,9 @@ async def get_payment(
     )
     print(f"Payment in BTC: {payment.btc_value}")
     btc_price = await blockonomics.get_btc_price(CurrencyCode.USD)
-    print(f"BTC price in {CurrencyCode.USD}: {btc_price.price}")
+    print(f"BTC price in {CurrencyCode.USD}: {btc_price}")
     print(
-        f"Payment in {CurrencyCode.USD}: {payment.convert_to_fiat(btc_price.price)}"
+        f"Payment in {CurrencyCode.USD}: {payment.convert_to_fiat(btc_price)}"
     )
 
 

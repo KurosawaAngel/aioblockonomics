@@ -3,8 +3,8 @@ from typing import Any, Mapping
 
 import aiohttp
 
-from aioblockonomics.api.session.base import BaseSession
 from aioblockonomics.api.const import BLOCKONOMICS_URL
+from aioblockonomics.api.session.base import BaseSession
 from aioblockonomics.enums import BlockonomicsEndpoint
 from aioblockonomics.utils import check_response
 
