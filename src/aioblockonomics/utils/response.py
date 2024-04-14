@@ -1,6 +1,7 @@
-import json
 from http import HTTPStatus
 from typing import Any
+
+import msgspec
 
 from aioblockonomics.api.exceptions import (
     InternalServerError,
@@ -12,10 +13,10 @@ from aioblockonomics.models import ServerError
 
 def check_response(raw_result: str, status_code: int) -> dict[str, Any]:
     if status_code == HTTPStatus.OK:
-        return json.loads(raw_result)
+        return msgspec.json.decode(raw_result)
 
     if status_code == HTTPStatus.INTERNAL_SERVER_ERROR:
-        error = ServerError.model_validate_json(raw_result)
+        error = msgspec.json.decode(raw_result, type=ServerError)
         raise InternalServerError(error.message)
 
     if status_code == HTTPStatus.UNAUTHORIZED:

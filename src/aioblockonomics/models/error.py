@@ -1,7 +1,7 @@
-from .base import BaseBlockonomicsModel
+import msgspec
 
 
-class ServerError(BaseBlockonomicsModel):
+class ServerError(msgspec.Struct, frozen=True, kw_only=True):
     """
     Attributes:
         message (str): The error message.

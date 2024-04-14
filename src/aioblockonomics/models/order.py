@@ -1,9 +1,9 @@
+import msgspec
+
 from aioblockonomics.enums import OrderStatus
 
-from .base import BaseBlockonomicsModel
 
-
-class Order(BaseBlockonomicsModel):
+class Order(msgspec.Struct, frozen=True, kw_only=True):
     """
     This is the Order class which represents an order from HTTP callback.
 

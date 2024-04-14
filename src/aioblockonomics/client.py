@@ -1,6 +1,7 @@
 import logging
 from http import HTTPMethod
 
+import msgspec
 from aiohttp import web
 
 from aioblockonomics.api.handlers import PaymentHandler, PaymentHandlerObject
@@ -32,15 +33,23 @@ class AioBlockonomics:
     ) -> None:
         self.session = session or AiohttpSession()
         self._payment_handlers: list[PaymentHandlerObject] = []
-        self.__headers = {"Authorization": f"Bearer {api_key}"}
+        self._headers = {"Authorization": f"Bearer {api_key}"}
 
     async def get_btc_price(self, currency_code: CurrencyCode) -> float | None:
+        """
+        Args:
+            currency_code (CurrencyCode): specified currency
+
+        Returns:
+            float | None: The price of Bitcoin in the specified currency. None if the price is not available.
+        """
+
         response = await self.session.make_request(
             HTTPMethod.GET,
             BlockonomicsEndpoint.BTC_PRICE,
             params={"currency": currency_code},
         )
-        return BTCPrice.model_validate(response).price
+        return msgspec.convert(response, BTCPrice).price
 
     async def create_new_wallet(
         self, reset: int | None, match_account: str | None
@@ -55,9 +64,9 @@ class AioBlockonomics:
             HTTPMethod.POST,
             BlockonomicsEndpoint.NEW_WALLET,
             params=param,
-            headers=self.__headers,
+            headers=self._headers,
         )
-        return NewWallet.model_validate(response)
+        return msgspec.convert(response, NewWallet)
 
     def register_payment_handler(
         self,
@@ -71,7 +80,7 @@ class AioBlockonomics:
         self._payment_handlers.append(handler)
 
     async def handle_payment_updates(self, request: web.Request) -> web.Response:
-        payment = Payment.model_validate(request.query)
+        payment = msgspec.convert(request, Payment)
 
         for handler in self._payment_handlers:
             if handler.status_filter and payment.status != handler.status_filter:

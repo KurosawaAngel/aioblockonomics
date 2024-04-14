@@ -32,7 +32,7 @@ class BaseSession(Protocol):
             data (dict[str, Any] | None): Optional; The body data to include in the request.
 
         Returns:
-            str: The JSON response from the Blockonomics API.
+            dict[str, Any]: The JSON response from the Blockonomics API.
         """
         raise NotImplementedError
 

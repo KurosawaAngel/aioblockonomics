@@ -1,7 +1,7 @@
-from .base import BaseBlockonomicsModel
+import msgspec
 
 
-class NewWallet(BaseBlockonomicsModel):
+class NewWallet(msgspec.Struct, frozen=True, kw_only=True):
     """
     This is the NewAddress class which represents a new address in the Blockonomics service to accept payments.
 

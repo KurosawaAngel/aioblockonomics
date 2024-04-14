@@ -1,9 +1,9 @@
+import msgspec
+
 from aioblockonomics.enums import PaymentStatus
 
-from .base import BaseBlockonomicsModel
 
-
-class Payment(BaseBlockonomicsModel):
+class Payment(msgspec.Struct, frozen=True, kw_only=True):
     """
     This is the Payment class which represents HTTP Callback from payment.
 

@@ -1,7 +1,7 @@
-from .base import BaseBlockonomicsModel
+import msgspec
 
 
-class BTCPrice(BaseBlockonomicsModel):
+class BTCPrice(msgspec.Struct, frozen=True, kw_only=True):
     """
     This is the BTCPrice class which represents the price of Bitcoin in a specific currency.
 

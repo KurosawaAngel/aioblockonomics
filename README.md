@@ -4,13 +4,8 @@
 
 ## About
 
-Used AioHTTP for the asynchronous requests and Pydantic for the data validation.
+Used AioHTTP for the asynchronous requests and msgspec for the data validation.
 
-**Requirements:**
-
-- python>=3.11
-- aiohttp>=3.9.3
-- pydantic>=2.6.4
 
 ## MRE
 
