@@ -14,11 +14,13 @@ class AiohttpSession(BaseSession):
     This is the aiohttp session which is used to make requests to the Blockonomics API.
     """
 
+    __slots__ = ("_session", "_base_url")
+
     _session: aiohttp.ClientSession | None
 
     def __init__(self, base_url: str = BLOCKONOMICS_URL) -> None:
         self._session = None
-        self.base_url = base_url
+        self._base_url = base_url
 
     async def make_request(
         self,

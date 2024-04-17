@@ -10,7 +10,9 @@ class BaseSession(Protocol):
     Base class for all Session classes.
     """
 
-    base_url: str
+    __slots__ = ()
+
+    _base_url: str
 
     @abstractmethod
     async def make_request(

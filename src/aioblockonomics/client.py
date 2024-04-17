@@ -25,6 +25,8 @@ class AioBlockonomics:
     API DOCUMENTATION: https://www.blockonomics.co/views/api.html
     """
 
+    __slots__ = ("session", "_payment_handlers", "_headers")
+
     def __init__(
         self,
         api_key: str,
