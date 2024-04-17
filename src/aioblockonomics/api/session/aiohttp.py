@@ -52,5 +52,5 @@ class AiohttpSession(BaseSession):
             aiohttp.ClientSession: The aiohttp.ClientSession object.
         """
         if self._session is None or self._session.closed:
-            self._session = aiohttp.ClientSession(self.base_url)
+            self._session = aiohttp.ClientSession(self._base_url)
         return self._session
