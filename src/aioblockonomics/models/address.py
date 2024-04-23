@@ -14,5 +14,5 @@ class NewWallet(msgspec.Struct, frozen=True, kw_only=True):
     """
 
     address: str
-    reset: int | None
-    account: str | None
+    reset: int | None = None
+    account: str | None = None

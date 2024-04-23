@@ -17,4 +17,4 @@ class Order(msgspec.Struct, frozen=True, kw_only=True):
 
     status: OrderStatus
     order_id: str
-    secret: str | None
+    secret: str | None = None

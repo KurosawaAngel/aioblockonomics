@@ -23,8 +23,8 @@ class Payment(msgspec.Struct, frozen=True, kw_only=True):
     addr: str
     value: int
     txid: str
-    rbf: int | None
-    secret: str | None
+    rbf: int | None = None
+    secret: str | None = None
 
     @property
     def btc_value(self) -> float:
