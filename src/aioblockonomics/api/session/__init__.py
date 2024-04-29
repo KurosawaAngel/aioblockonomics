@@ -1,3 +1,3 @@
-from .aiohttp import AiohttpSession
-
 __all__ = ["AiohttpSession"]
+
+from .aiohttp import AiohttpSession

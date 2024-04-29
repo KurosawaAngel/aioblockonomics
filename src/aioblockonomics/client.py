@@ -25,7 +25,7 @@ class AioBlockonomics:
     API DOCUMENTATION: https://www.blockonomics.co/views/api.html
     """
 
-    __slots__ = ("session", "_payment_handlers", "_headers")
+    __slots__ = ("session", "_payment_handlers", "__headers")
 
     def __init__(
         self,
@@ -35,7 +35,7 @@ class AioBlockonomics:
     ) -> None:
         self.session = session or AiohttpSession()
         self._payment_handlers: list[PaymentHandlerObject] = []
-        self._headers = {"Authorization": f"Bearer {api_key}"}
+        self.__headers = {"Authorization": f"Bearer {api_key}"}
 
     async def get_btc_price(self, currency_code: CurrencyCode) -> float | None:
         """
@@ -66,7 +66,7 @@ class AioBlockonomics:
             HTTPMethod.POST,
             BlockonomicsEndpoint.NEW_WALLET,
             params=param,
-            headers=self._headers,
+            headers=self.__headers,
         )
         return msgspec.convert(response, NewWallet)
 
