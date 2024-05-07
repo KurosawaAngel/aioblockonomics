@@ -1,7 +1,8 @@
-import msgspec
+from dataclasses import dataclass
 
 
-class ServerError(msgspec.Struct, frozen=True, kw_only=True):
+@dataclass(frozen=True, slots=True)
+class ServerError:
     """
     Attributes:
         message (str): The error message.

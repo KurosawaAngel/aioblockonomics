@@ -1,9 +1,10 @@
-import msgspec
+from dataclasses import dataclass
 
 from aioblockonomics.enums import PaymentStatus
 
 
-class Payment(msgspec.Struct, frozen=True, kw_only=True):
+@dataclass(frozen=True, slots=True)
+class Payment:
     """
     This is the Payment class which represents HTTP Callback from payment.
 

@@ -1,7 +1,8 @@
-import msgspec
+from dataclasses import dataclass
 
 
-class NewWallet(msgspec.Struct, frozen=True, kw_only=True):
+@dataclass(frozen=True, slots=True)
+class NewWallet:
     """
     This is the NewAddress class which represents a new address in the Blockonomics service to accept payments.
 

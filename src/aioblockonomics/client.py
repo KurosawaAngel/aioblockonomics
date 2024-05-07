@@ -1,12 +1,13 @@
 import logging
-from http import HTTPMethod
 
-import msgspec
-from aiohttp import web
+from adaptix import Retort, name_mapping
+from aiohttp import ClientSession, web
+from dataclass_rest import get
+from dataclass_rest.client_protocol import FactoryProtocol
+from dataclass_rest.http.aiohttp import AiohttpClient
 
 from aioblockonomics.api.handlers import PaymentHandler, PaymentHandlerObject
-from aioblockonomics.api.session import AiohttpSession
-from aioblockonomics.api.session.base import BaseSession
+from aioblockonomics.api.method import APIMethod
 from aioblockonomics.enums import (
     BlockonomicsEndpoint,
     CurrencyCode,
@@ -17,7 +18,7 @@ from aioblockonomics.models import BTCPrice, NewWallet, Payment
 logger = logging.getLogger(__name__)
 
 
-class AioBlockonomics:
+class AioBlockonomics(AiohttpClient):
     """
     Blockonomics API client.
     Consists of methods to interact with Blockonomics API.
@@ -25,50 +26,53 @@ class AioBlockonomics:
     API DOCUMENTATION: https://www.blockonomics.co/views/api.html
     """
 
-    __slots__ = ("session", "_payment_handlers", "__headers")
+    method_class = APIMethod
 
     def __init__(
         self,
         api_key: str,
         *,
-        session: BaseSession | None = None,
+        base_url: str = "https://www.blockonomics.co/api/",
     ) -> None:
-        self.session = session or AiohttpSession()
+        session = ClientSession(headers={"Authorization": f"Bearer {api_key}"})
+        super().__init__(base_url=base_url, session=session)
         self._payment_handlers: list[PaymentHandlerObject] = []
-        self.__headers = {"Authorization": f"Bearer {api_key}"}
 
-    async def get_btc_price(self, currency_code: CurrencyCode) -> float | None:
+    def _init_request_args_factory(self) -> FactoryProtocol:
+        return Retort(recipe=[name_mapping(omit_default=True)])
+
+    async def get_btc_price(self, currency: CurrencyCode) -> float | None:
         """
         Args:
-            currency_code (CurrencyCode): specified currency
+            currency (CurrencyCode): specified currency
 
         Returns:
-            float | None: The price of Bitcoin in the specified currency. None if the price is not available.
+            float | None: The price of Bitcoin in the specified currency or None if the price is not available.
         """
+        res = await self._get_btc_price(currency)
+        return res.price
 
-        response = await self.session.make_request(
-            HTTPMethod.GET,
-            BlockonomicsEndpoint.BTC_PRICE,
-            params={"currency": currency_code},
-        )
-        return msgspec.convert(response, BTCPrice).price
+    @get(BlockonomicsEndpoint.BTC_PRICE)
+    async def _get_btc_price(self, currency: CurrencyCode) -> BTCPrice:
+        pass
 
+    @get(BlockonomicsEndpoint.NEW_WALLET)
     async def create_new_wallet(
-        self, reset: int | None, match_account: str | None
+        self,
+        *,
+        reset: int | None = None,
+        match_account: str | None = None,
     ) -> NewWallet:
-        param: dict[str, str | int] = {}
-        if reset:
-            param["reset"] = reset
-        if match_account:
-            param["match_account"] = match_account
+        """
+        Create a new wallet.
 
-        response = await self.session.make_request(
-            HTTPMethod.POST,
-            BlockonomicsEndpoint.NEW_WALLET,
-            params=param,
-            headers=self.__headers,
-        )
-        return msgspec.convert(response, NewWallet)
+        Kwargs:
+            reset (int | None): Reset index.
+            match_account (str | None): Linked address account.
+
+        Returns:
+            NewWallet: The newly created wallet.
+        """
 
     def register_payment_handler(
         self,
@@ -82,7 +86,7 @@ class AioBlockonomics:
         self._payment_handlers.append(handler)
 
     async def handle_payment_updates(self, request: web.Request) -> web.Response:
-        payment = msgspec.convert(request, Payment)
+        payment = self.request_body_factory.load(request.query, Payment)
 
         for handler in self._payment_handlers:
             if handler.status_filter and payment.status != handler.status_filter:

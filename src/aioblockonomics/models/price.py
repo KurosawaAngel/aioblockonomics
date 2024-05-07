@@ -1,7 +1,8 @@
-import msgspec
+from dataclasses import dataclass
 
 
-class BTCPrice(msgspec.Struct, frozen=True, kw_only=True):
+@dataclass(frozen=True, slots=True)
+class BTCPrice:
     """
     This is the BTCPrice class which represents the price of Bitcoin in a specific currency.
 

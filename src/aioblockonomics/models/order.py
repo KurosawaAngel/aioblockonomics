@@ -1,9 +1,10 @@
-import msgspec
+from dataclasses import dataclass
 
 from aioblockonomics.enums import OrderStatus
 
 
-class Order(msgspec.Struct, frozen=True, kw_only=True):
+@dataclass(frozen=True, slots=True)
+class Order:
     """
     This is the Order class which represents an order from HTTP callback.
 

@@ -4,7 +4,7 @@
 
 ## About
 
-Used AioHTTP for the asynchronous requests and msgspec for the data validation.
+Used AioHTTP for the asynchronous requests and adaptix for the data validation.
 
 
 ## MRE
