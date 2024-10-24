@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(slots=True)
 class BTCPrice:
     """
     This is the BTCPrice class which represents the price of Bitcoin in a specific currency.

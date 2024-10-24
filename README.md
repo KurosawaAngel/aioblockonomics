@@ -10,42 +10,41 @@ Used AioHTTP for the asynchronous requests and adaptix for the data validation.
 ## MRE
 
 ```python
-from aioblockonomics import AioBlockonomics
-from aioblockonomics.models import Payment
-from aioblockonomics.enums import CurrencyCode
+from typing import AsyncIterator
+
 from aiohttp import web
 
+from aioblockonomics import AioBlockonomics
+from aioblockonomics.enums import CurrencyCode
+from aioblockonomics.models.payment import Payment
+
 API_KEY = ""
+BLOCKONOMICS_KEY = web.AppKey("blockonomics", AioBlockonomics)
+MY_SECRET = ""
 
 
-async def get_payment(
-        payment: Payment, app: web.Application, blockonomics: AioBlockonomics
-) -> None:
-    print(
-        f"Payment received: {payment.value} satoshi on address {payment.addr}. Status: {payment.status}"
-    )
-    print(f"Payment in BTC: {payment.btc_value}")
-    btc_price = await blockonomics.get_btc_price(CurrencyCode.USD)
-    print(f"BTC price in {CurrencyCode.USD}: {btc_price}")
-    print(
-        f"Payment in {CurrencyCode.USD}: {payment.convert_to_fiat(btc_price)}"
-    )
+async def get_blockonomics(app: web.Application) -> AsyncIterator[None]:
+    app[BLOCKONOMICS_KEY] = AioBlockonomics(API_KEY)
+    yield
+    await app[BLOCKONOMICS_KEY].session.close()
 
 
-async def on_shutdown(app: web.Application) -> None:
-    blockonomics: AioBlockonomics = app["blockonomics"]
-    await blockonomics.session.close()
+async def handle_payment(request: web.Request) -> web.Response:
+    blockonomics = request.app[BLOCKONOMICS_KEY]
+    payment = blockonomics.response_body_factory.load(await request.json(), Payment)
+    if payment.secret != MY_SECRET:
+        raise web.HTTPUnauthorized()
+
+    rate = await blockonomics.get_btc_price(CurrencyCode.USD)
+    print(f"Payed USDT: {payment.value / 10**8 / rate} USD")
+
+    return web.Response()
 
 
 def main() -> None:
     app = web.Application()
-
-    blockonomics = AioBlockonomics(API_KEY)
-    blockonomics.register_payment_handler(get_payment)
-    app.add_routes([web.get("/payment", blockonomics.handle_payment_updates)])
-    app["blockonomics"] = blockonomics
-    app.on_shutdown.append(on_shutdown)
-
+    app.cleanup_ctx.append(get_blockonomics)
+    app.add_routes([web.get("/payment", handle_payment)])
     return web.run_app(app)
 
 

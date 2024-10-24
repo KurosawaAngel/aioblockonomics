@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from aioblockonomics.enums import PaymentStatus
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(slots=True)
 class Payment:
     """
     This is the Payment class which represents HTTP Callback from payment.
@@ -26,10 +26,3 @@ class Payment:
     txid: str
     rbf: int | None = None
     secret: str | None = None
-
-    @property
-    def btc_value(self) -> float:
-        return self.value / 1e8
-
-    def convert_to_fiat(self, rate: float) -> float:
-        return self.btc_value * rate

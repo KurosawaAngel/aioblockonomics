@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(slots=True)
 class NewWallet:
     """
     This is the NewAddress class which represents a new address in the Blockonomics service to accept payments.
