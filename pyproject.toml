@@ -5,7 +5,7 @@ description = "Asynchronous python wrapper for the Blockonomics API"
 authors = [{author = "Angel", email = "145038102+KurosawaAngel@users.noreply.github.com"}]
 license = "Apache-2.0"
 readme = "README.md"
-repository = "https://github.com/KuroKoka551/aioblockonomics"
+repository = "https://github.com/KurosawaAngel/aioblockonomics"
 documentation = "https://www.blockonomics.co/views/api.html"
 packages = [{include = "aioblockonomics", from = "src"}]
 requires-python = ">=3.12"
