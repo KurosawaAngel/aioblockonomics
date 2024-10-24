@@ -1,24 +1,19 @@
-[tool.poetry]
+[project]
 name = "aioblockonomics"
-version = "0.2.0"
+version = "0.3.0"
 description = "Asynchronous python wrapper for the Blockonomics API"
-authors = ["KuroAngel <145038102+KuroKoka551@users.noreply.github.com>"]
+authors = [{author = "Angel", email = "145038102+KurosawaAngel@users.noreply.github.com"}]
 license = "Apache-2.0"
 readme = "README.md"
 repository = "https://github.com/KuroKoka551/aioblockonomics"
 documentation = "https://www.blockonomics.co/views/api.html"
 packages = [{include = "aioblockonomics", from = "src"}]
-
-[tool.poetry.dependencies]
-python = "^3.11"
-aiohttp = "^3.9.4"
-dataclass-rest = "^0.4"
-
-
-[tool.poetry.group.dev.dependencies]
-mypy = "^1.9.0"
-ruff = "^0.3.7"
+requires-python = ">=3.12"
+dependencies = [
+    "aiohttp>=3.10.10",
+    "dataclass-rest>=0.5.0",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
